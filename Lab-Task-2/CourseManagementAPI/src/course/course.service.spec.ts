@@ -1,18 +1,43 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CourseService } from './course.service.js';
+import { Injectable } from '@nestjs/common';
+import { CreateCourseDto } from './dto/create-course.dto.js';
+import { UpdateCourseDto } from './dto/update-course.dto.js';
 
-describe('CourseService', () => {
-  let service: CourseService;
+@Injectable()
+export class CourseService {
+  getAllCourses() {
+    return { message: 'All courses fetched successfully', data: [] };
+  }
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [CourseService],
-    }).compile();
+  getCourseById(id: string) {
+    return { message: 'Course fetched successfully', id: id };
+  }
 
-    service = module.get<CourseService>(CourseService);
-  });
+  createCourse(dto: CreateCourseDto) {
+    return { message: 'Course created successfully', data: dto };
+  }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-});
+  updateCourse(id: string, dto: UpdateCourseDto) {
+    return { message: 'Course updated successfully', id: id, data: dto };
+  }
+
+  patchCourse(id: string, dto: UpdateCourseDto) {
+    return {
+      message: 'Course patched successfully',
+      id: id,
+      updatedFields: Object.keys(dto),
+    };
+  }
+
+  deleteCourse(id: string) {
+    return { message: 'Course deleted successfully', id: id };
+  }
+
+  uploadCourseMaterial(id: string, file: Express.Multer.File) {
+    return {
+      message: 'Material uploaded successfully',
+      courseId: id,
+      filename: file.filename,
+      path: `uploads/${file.filename}`,
+    };
+  }
+}
